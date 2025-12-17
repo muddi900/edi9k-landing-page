@@ -1,0 +1,106 @@
+---
+---
+
+<section id="beta-signup" class="py-24 px-6">
+  <div class="max-w-2xl mx-auto text-center">
+    <!-- Section header -->
+    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+      Join the Beta
+    </h2>
+    <p class="text-xl text-gray-400 mb-12">
+      Be among the first to experience AI-powered video editing.<br>
+      Get early access and exclusive discounts.
+    </p>
+
+    <!-- Signup form -->
+    <form id="beta-form" class="max-w-md mx-auto">
+      <div class="flex flex-col sm:flex-row gap-4">
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+          class="flex-1 px-6 py-4 rounded-full bg-gray-900 border border-gray-800 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-white placeholder-gray-500"
+        />
+        <button
+          type="submit"
+          class="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold transition-all transform hover:scale-105 shadow-lg shadow-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span id="submit-text">Join Waitlist</span>
+          <span id="loading-text" class="hidden">Joining...</span>
+        </button>
+      </div>
+
+      <!-- Success message -->
+      <div id="success-message" class="hidden mt-6 p-4 bg-green-900/30 border border-green-500/50 rounded-lg">
+        <p class="text-green-400">
+          🎉 Thanks! We'll email you when beta is ready.
+        </p>
+      </div>
+
+      <!-- Error message -->
+      <div id="error-message" class="hidden mt-6 p-4 bg-red-900/30 border border-red-500/50 rounded-lg">
+        <p class="text-red-400" id="error-text">
+          Something went wrong. Please try again.
+        </p>
+      </div>
+    </form>
+
+    <p class="mt-8 text-gray-500 text-sm">
+      No spam. Unsubscribe anytime. We respect your privacy.
+    </p>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('beta-form') as HTMLFormElement;
+  const emailInput = document.getElementById('email') as HTMLInputElement;
+  const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+  const submitText = document.getElementById('submit-text') as HTMLSpanElement;
+  const loadingText = document.getElementById('loading-text') as HTMLSpanElement;
+  const successMessage = document.getElementById('success-message') as HTMLDivElement;
+  const errorMessage = document.getElementById('error-message') as HTMLDivElement;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Hide previous messages
+    successMessage.classList.add('hidden');
+    errorMessage.classList.add('hidden');
+
+    // Show loading state
+    submitBtn.disabled = true;
+    submitText.classList.add('hidden');
+    loadingText.classList.remove('hidden');
+
+    try {
+      const response = await fetch('/api/beta-signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailInput.value,
+          timestamp: new Date().toISOString(),
+        }),
+      });
+
+      if (response.ok) {
+        // Show success message
+        successMessage.classList.remove('hidden');
+        emailInput.value = '';
+      } else {
+        throw new Error('Signup failed');
+      }
+    } catch (error) {
+      // Show error message
+      errorMessage.classList.remove('hidden');
+    } finally {
+      // Reset button state
+      submitBtn.disabled = false;
+      submitText.classList.remove('hidden');
+      loadingText.classList.add('hidden');
+    }
+  });
+</script>

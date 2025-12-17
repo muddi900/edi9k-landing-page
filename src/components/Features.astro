@@ -1,0 +1,63 @@
+---
+const features = [
+  {
+    title: "AI-Driven Editing",
+    description: '"Trim first 10 seconds" → Done. Natural language commands. No timeline scrubbing needed.',
+    icon: "✨",
+  },
+  {
+    title: "Non-Destructive Workflow",
+    description: "Unlimited undo/redo. Original files never touched. Edit history preserved.",
+    icon: "🔄",
+  },
+  {
+    title: "Professional Transitions",
+    description: "Fade, wipe, slide effects. AI suggests best transitions. Preview in real-time.",
+    icon: "🎬",
+  },
+  {
+    title: "Cross-Platform",
+    description: "iOS, Android, macOS. Same projects everywhere.",
+    icon: "📱",
+  },
+  {
+    title: "Fast & Local",
+    description: "All processing on device. No uploads required. Privacy-first.",
+    icon: "⚡",
+  },
+  {
+    title: "Simple Prompts",
+    description: 'Just type what you want: "Add fade between clips", "Remove background noise", "Speed up 2x".',
+    icon: "💬",
+  },
+];
+---
+
+<section id="features" class="py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <!-- Section header -->
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold mb-4">
+        Editing Made <span class="bg-gradient-to-r from-purple-400 to-blue-500 text-transparent bg-clip-text">Effortless</span>
+      </h2>
+      <p class="text-xl text-gray-400">
+        Focus on creativity, not complexity
+      </p>
+    </div>
+
+    <!-- Features grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {features.map((feature) => (
+        <div class="group p-6 rounded-2xl bg-gray-900/50 border border-gray-800 hover:border-purple-500/50 transition-all hover:shadow-lg hover:shadow-purple-500/10">
+          <div class="text-4xl mb-4">{feature.icon}</div>
+          <h3 class="text-xl font-semibold mb-2 group-hover:text-purple-400 transition-colors">
+            {feature.title}
+          </h3>
+          <p class="text-gray-400">
+            {feature.description}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
