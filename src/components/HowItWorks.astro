@@ -2,66 +2,80 @@
 const steps = [
   {
     number: "1",
-    title: "Import",
-    description: "Add your video/audio files",
+    title: "Drop Your Clips",
+    description: "Drag videos in. That's it.",
   },
   {
     number: "2",
-    title: "Prompt",
-    description: '"Add fade transition between clips"',
+    title: "Tell It What to Do",
+    description: '"Cut out the silence"',
   },
   {
     number: "3",
-    title: "Preview",
-    description: "See results instantly",
+    title: "Watch It Happen",
+    description: "AI does the work in seconds",
   },
   {
     number: "4",
-    title: "Export",
-    description: "Render final video",
+    title: "Export & Share",
+    description: "Perfect video, ready to go",
   },
 ];
 ---
 
-<section id="how-it-works" class="py-24 px-6 bg-gradient-to-b from-gray-950 to-gray-900">
-  <div class="max-w-6xl mx-auto">
+<section id="how-it-works" class="py-32 px-6 bg-gray-900 relative">
+  <!-- Subtle grid overlay -->
+  <div class="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
+
+  <div class="max-w-6xl mx-auto relative z-10">
     <!-- Section header -->
-    <div class="text-center mb-16">
+    <div class="text-center mb-20 animate-on-scroll">
       <h2 class="text-4xl md:text-5xl font-bold mb-4">
-        How It Works
+        Stupidly Simple
       </h2>
       <p class="text-xl text-gray-400">
-        Four simple steps to professional videos
+        If you can type, you can edit
       </p>
     </div>
 
     <!-- Steps -->
-    <div class="grid md:grid-cols-4 gap-8">
+    <div class="grid md:grid-cols-4 gap-12">
       {steps.map((step, index) => (
-        <div class="relative">
+        <div class={`relative animate-on-scroll delay-${index * 100}`}>
           {/* Connector line (except for last item) */}
           {index < steps.length - 1 && (
-            <div class="hidden md:block absolute top-12 left-[calc(50%+2rem)] w-full h-0.5 bg-gradient-to-r from-purple-500 to-transparent"></div>
+            <div class="hidden md:block absolute top-12 left-[calc(50%+2.5rem)] w-[calc(100%-2.5rem)] h-0.5 bg-gradient-to-r from-purple-500/50 via-purple-500/30 to-transparent"></div>
           )}
 
-          <div class="relative text-center">
+          <div class="relative text-center group">
             {/* Number badge */}
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 text-2xl font-bold mb-4 shadow-lg shadow-purple-500/50">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-purple-600 text-3xl font-bold mb-6 shadow-lg shadow-purple-600/30 transform group-hover:scale-110 transition-transform duration-300">
               {step.number}
             </div>
 
             {/* Title */}
-            <h3 class="text-xl font-semibold mb-2">
+            <h3 class="text-2xl font-bold mb-3">
               {step.title}
             </h3>
 
             {/* Description */}
-            <p class="text-gray-400">
+            <p class="text-gray-400 text-lg leading-relaxed">
               {step.description}
             </p>
           </div>
         </div>
       ))}
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="text-center mt-20 animate-on-scroll delay-400">
+      <p class="text-gray-500 mb-6">Seriously, it's that easy.</p>
+      <a
+        href="#beta-signup"
+        class="inline-block text-purple-400 hover:text-purple-300 font-semibold transition-colors"
+      >
+        Try it yourself →
+      </a>
     </div>
   </div>
 </section>

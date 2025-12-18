@@ -1,16 +1,24 @@
 ---
 ---
 
-<section id="beta-signup" class="py-24 px-6">
-  <div class="max-w-2xl mx-auto text-center">
+<section id="beta-signup" class="py-32 px-6 relative overflow-hidden">
+  <!-- Background effects -->
+  <div class="absolute inset-0 bg-gray-950"></div>
+  <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-purple-600/5 rounded-full blur-3xl"></div>
+
+  <div class="max-w-2xl mx-auto text-center relative z-10">
     <!-- Section header -->
-    <h2 class="text-4xl md:text-5xl font-bold mb-4">
-      Join the Beta
-    </h2>
-    <p class="text-xl text-gray-400 mb-12">
-      Be among the first to experience AI-powered video editing.<br>
-      Get early access and exclusive discounts.
-    </p>
+    <div class="animate-on-scroll">
+      <h2 class="text-4xl md:text-5xl font-bold mb-6">
+        Ready to Edit Faster?
+      </h2>
+      <p class="text-xl text-gray-400 mb-4">
+        Join 500+ creators in early access.
+      </p>
+      <p class="text-lg text-gray-500 mb-12">
+        Get notified when we launch + lock in 50% off forever.
+      </p>
+    </div>
 
     <!-- Signup form -->
     <form id="beta-form" class="max-w-md mx-auto">
@@ -25,7 +33,7 @@
         />
         <button
           type="submit"
-          class="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold transition-all transform hover:scale-105 shadow-lg shadow-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="px-8 py-4 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-semibold transition-all transform hover:scale-105 shadow-lg shadow-purple-600/30 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span id="submit-text">Join Waitlist</span>
           <span id="loading-text" class="hidden">Joining...</span>

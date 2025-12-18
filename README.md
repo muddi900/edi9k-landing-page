@@ -1,6 +1,6 @@
-# edi9k Landing Page
+# clipconvo Landing Page
 
-Marketing landing page for edi9k AI video editor with beta signup integration.
+Marketing landing page for clipconvo AI video editor with beta signup integration.
 
 ## Tech Stack
 

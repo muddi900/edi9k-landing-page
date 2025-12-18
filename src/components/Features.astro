@@ -1,59 +1,61 @@
 ---
 const features = [
   {
-    title: "AI-Driven Editing",
-    description: '"Trim first 10 seconds" → Done. Natural language commands. No timeline scrubbing needed.',
+    title: "Tell, Don't Edit",
+    description: 'Type "trim first 10 seconds" and watch it happen. No scrubbing timelines.',
     icon: "✨",
   },
   {
-    title: "Non-Destructive Workflow",
-    description: "Unlimited undo/redo. Original files never touched. Edit history preserved.",
+    title: "Undo Anything",
+    description: "Made a mistake? Every edit is reversible. Your originals stay untouched.",
     icon: "🔄",
   },
   {
-    title: "Professional Transitions",
-    description: "Fade, wipe, slide effects. AI suggests best transitions. Preview in real-time.",
+    title: "Pro Transitions",
+    description: "Fades, wipes, slides. AI picks what works. You just approve.",
     icon: "🎬",
   },
   {
-    title: "Cross-Platform",
-    description: "iOS, Android, macOS. Same projects everywhere.",
+    title: "Your Devices",
+    description: "Start on iPhone, finish on Mac. Projects sync everywhere.",
     icon: "📱",
   },
   {
-    title: "Fast & Local",
-    description: "All processing on device. No uploads required. Privacy-first.",
+    title: "Private & Fast",
+    description: "Zero uploads. Everything stays on your device. Your videos, your privacy.",
     icon: "⚡",
   },
   {
-    title: "Simple Prompts",
-    description: 'Just type what you want: "Add fade between clips", "Remove background noise", "Speed up 2x".',
+    title: "Plain English",
+    description: 'No jargon. "Speed up 2x", "Remove silence", "Add music fade". Done.',
     icon: "💬",
   },
 ];
 ---
 
-<section id="features" class="py-24 px-6">
+<section id="features" class="py-32 px-6 relative">
   <div class="max-w-7xl mx-auto">
     <!-- Section header -->
-    <div class="text-center mb-16">
+    <div class="text-center mb-20 animate-on-scroll">
       <h2 class="text-4xl md:text-5xl font-bold mb-4">
-        Editing Made <span class="bg-gradient-to-r from-purple-400 to-blue-500 text-transparent bg-clip-text">Effortless</span>
+        Why You'll Love It
       </h2>
       <p class="text-xl text-gray-400">
-        Focus on creativity, not complexity
+        No learning curve. Just results.
       </p>
     </div>
 
-    <!-- Features grid -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {features.map((feature) => (
-        <div class="group p-6 rounded-2xl bg-gray-900/50 border border-gray-800 hover:border-purple-500/50 transition-all hover:shadow-lg hover:shadow-purple-500/10">
-          <div class="text-4xl mb-4">{feature.icon}</div>
-          <h3 class="text-xl font-semibold mb-2 group-hover:text-purple-400 transition-colors">
+    <!-- Features grid with staggered animation -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {features.map((feature, index) => (
+        <div
+          class={`group p-8 rounded-3xl bg-gray-900/50 border border-gray-800 hover:border-purple-600 transition-all duration-300 hover:shadow-lg hover:shadow-purple-600/10 animate-on-scroll delay-${index * 100}`}
+        >
+          <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-300">{feature.icon}</div>
+          <h3 class="text-2xl font-bold mb-3 group-hover:text-purple-400 transition-colors">
             {feature.title}
           </h3>
-          <p class="text-gray-400">
+          <p class="text-gray-400 leading-relaxed">
             {feature.description}
           </p>
         </div>
