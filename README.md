@@ -1,6 +1,6 @@
-# clipconvo Landing Page
+# ClipConvo Landing Page
 
-Marketing landing page for clipconvo AI video editor with beta signup integration.
+Marketing landing page for ClipConvo AI video editor with beta signup integration.
 
 ## Tech Stack
 
