@@ -21,5 +21,29 @@ const { title, description = "AI-Powered Video Editing in Your Pocket" } = Astro
   </head>
   <body class="bg-gray-950 text-white antialiased">
     <slot />
+
+    <script>
+      // Global Intersection Observer for scroll animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      // Observe all elements with animate-on-scroll class
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+          observer.observe(el);
+        });
+      });
+    </script>
   </body>
 </html>
