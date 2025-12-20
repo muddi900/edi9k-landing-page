@@ -1,6 +1,6 @@
-# ClipConvo Landing Page
+# ClipQwik Landing Page
 
-Marketing landing page for ClipConvo AI video editor with beta signup integration.
+Marketing landing page for ClipQwik AI video editor with beta signup integration.
 
 ## Tech Stack
 
