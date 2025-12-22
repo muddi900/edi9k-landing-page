@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { google } from 'googleapis';
 
+export const prerender = false;
+
 export const POST: APIRoute = async ({ request }) => {
   try {
     const { email, timestamp } = await request.json();
