@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClipConvo Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      overflow: auto;
+      background: #1a1a1a;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 1920px;
+      aspect-ratio: 16 / 9;
+      margin: 0 auto;
+      background: #030712;
+      overflow: hidden;
+    }
+
+    .clip {
+      transition: transform 0.8s ease-out, width 0.8s ease-out;
+      will-change: transform, width;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-spinner {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    .cursor-blink::after {
+      content: '|';
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen gap-8 py-8">
+  <!-- 16:9 Container -->
+  <div class="app-container">
+    <div class="w-full h-full p-8 flex flex-col">
+    <!-- Header -->
+    <div class="flex items-center gap-4 mb-6 fade-in">
+      <img src="../public/logo.png" alt="ClipConvo" class="h-12">
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col justify-center gap-6">
+      <!-- Video Preview Placeholder -->
+      <div class="relative bg-gray-900 rounded-xl overflow-hidden shadow-2xl border border-gray-800" style="height: 320px;">
+        <img src="thumbnail.png" alt="Video thumbnail" class="w-full h-full object-contain">
+        <!-- Play Overlay -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div class="w-20 h-20 rounded-full bg-purple-600/90 flex items-center justify-center shadow-xl">
+            <svg class="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline Section -->
+      <div class="space-y-4">
+        <!-- Timeline Ruler -->
+        <div class="flex justify-between text-gray-500 text-xs px-3">
+          <span>0:00</span>
+          <span>0:10</span>
+          <span>0:20</span>
+          <span>0:30</span>
+        </div>
+
+        <!-- Timeline Track -->
+        <div class="relative h-20 bg-gray-900 rounded-lg border border-gray-800">
+          <div id="video-clip" class="clip absolute inset-y-2 left-2 right-2 bg-purple-600 rounded-lg flex items-center justify-between px-4" data-start="0" data-duration="30">
+            <span id="clip-label" class="text-white font-semibold text-base">video.mp4</span>
+            <span id="clip-duration" class="text-white font-mono text-base">0:30</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prompt Input Section -->
+      <div class="space-y-3">
+        <div class="flex gap-3">
+          <input
+            type="text"
+            id="prompt-input"
+            placeholder="Tell me what to edit..."
+            class="flex-1 px-6 py-4 rounded-xl bg-gray-900 border border-gray-800 focus:border-purple-500 focus:outline-none text-white placeholder-gray-500 text-lg"
+            readonly
+          />
+          <button
+            id="submit-btn"
+            class="px-8 py-4 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold text-lg transition-all shadow-lg shadow-purple-600/30"
+          >
+            <span id="submit-text">Edit</span>
+            <span id="loading-icon" class="hidden loading-spinner inline-block">⚙️</span>
+          </button>
+        </div>
+
+        <!-- Success Message -->
+        <div id="success-message" class="hidden p-4 bg-green-900/30 border border-green-500/50 rounded-lg">
+          <p class="text-green-400 text-lg">✓ Trimmed first 10 seconds</p>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <!-- Play Button -->
+  <button
+    id="play-btn"
+    class="px-12 py-6 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xl transition-all shadow-lg shadow-purple-600/30"
+    onclick="startDemo()"
+  >
+    ▶ Play Demo
+  </button>
+
+  <script>
+    // Animation sequence
+    let step = 0;
+
+    function typeText(text, delay = 100) {
+      const input = document.getElementById('prompt-input');
+      let i = 0;
+
+      return new Promise((resolve) => {
+        input.classList.add('cursor-blink');
+        const interval = setInterval(() => {
+          if (i < text.length) {
+            input.value += text[i];
+            i++;
+          } else {
+            clearInterval(interval);
+            input.classList.remove('cursor-blink');
+            resolve();
+          }
+        }, delay);
+      });
+    }
+
+    async function showLoading() {
+      const submitText = document.getElementById('submit-text');
+      const loadingIcon = document.getElementById('loading-icon');
+      const submitBtn = document.getElementById('submit-btn');
+
+      submitText.classList.add('hidden');
+      loadingIcon.classList.remove('hidden');
+      submitBtn.disabled = true;
+
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+
+    function animateTrim() {
+      const clip = document.getElementById('video-clip');
+      const duration = document.getElementById('clip-duration');
+      const label = document.getElementById('clip-label');
+
+      // Calculate position: 0:10 out of 0:30 = 33.33% from left
+      // Remaining width: 0:20 out of 0:30 = 66.67%
+      clip.style.left = '33.33%';
+      clip.style.right = '2px';
+      clip.style.width = '63.67%';
+
+      setTimeout(() => {
+        duration.textContent = '0:20';
+        label.textContent = 'video.mp4(trimmed)';
+      }, 400);
+    }
+
+    function showSuccess() {
+      const successMsg = document.getElementById('success-message');
+      const submitText = document.getElementById('submit-text');
+      const loadingIcon = document.getElementById('loading-icon');
+      const submitBtn = document.getElementById('submit-btn');
+
+      loadingIcon.classList.add('hidden');
+      submitText.classList.remove('hidden');
+      submitBtn.disabled = false;
+
+      successMsg.classList.remove('hidden');
+      successMsg.classList.add('fade-in');
+    }
+
+    // Start animation sequence
+    async function runDemo() {
+      // Wait 2 seconds for initial state
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Type the prompt (3 seconds)
+      await typeText('Trim the first 10 seconds', 100);
+
+      // Wait 1 second
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Show loading (2 seconds)
+      await showLoading();
+
+      // Animate timeline
+      animateTrim();
+
+      // Wait for animation to complete
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Show success message
+      showSuccess();
+    }
+
+    // Reset demo to initial state
+    function resetDemo() {
+      const input = document.getElementById('prompt-input');
+      const clip = document.getElementById('video-clip');
+      const duration = document.getElementById('clip-duration');
+      const label = document.getElementById('clip-label');
+      const successMsg = document.getElementById('success-message');
+
+      input.value = '';
+      clip.style.left = '2px';
+      clip.style.right = '2px';
+      clip.style.width = '';
+      duration.textContent = '0:30';
+      label.textContent = 'video.mp4';
+      successMsg.classList.add('hidden');
+    }
+
+    // Start demo from play button
+    function startDemo() {
+      const playBtn = document.getElementById('play-btn');
+      playBtn.disabled = true;
+      playBtn.textContent = 'Playing...';
+      playBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      resetDemo();
+      runDemo();
+    }
+  </script>
+</body>
+</html>
