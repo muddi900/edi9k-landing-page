@@ -6,7 +6,11 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@astrojs/netlify": "^6.6.3",
@@ -14,5 +18,10 @@
     "astro": "^5.16.6",
     "googleapis": "^169.0.0",
     "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "@vitest/ui": "^4.0.16",
+    "vitest": "^4.0.16"
   }
 }
